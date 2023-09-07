@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "並行線", "並行線.vcxproj", "{CC7548F7-92BD-4310-B1B5-F945081A2B6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC7548F7-92BD-4310-B1B5-F945081A2B6D}.Debug|x64.ActiveCfg = Debug|x64
+		{CC7548F7-92BD-4310-B1B5-F945081A2B6D}.Debug|x64.Build.0 = Debug|x64
+		{CC7548F7-92BD-4310-B1B5-F945081A2B6D}.Release|x64.ActiveCfg = Release|x64
+		{CC7548F7-92BD-4310-B1B5-F945081A2B6D}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D54222E4-4BC5-4F42-8102-77314AAB365D}
+	EndGlobalSection
+EndGlobal
