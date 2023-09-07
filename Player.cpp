@@ -8,8 +8,8 @@ void Player::Initialize()
 
 void Player::Update(char* keys, char* preKeys)
 {
-	BluePlayer.pos.x += 0.1f;
-	PinkPlayer.pos.x += 0.1f;
+	BluePlayer.pos.x += 0.06f;
+	PinkPlayer.pos.x += 0.06f;
 
 	if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
 		changeFlag = true;
