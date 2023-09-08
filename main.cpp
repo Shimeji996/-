@@ -1,7 +1,7 @@
 #include <Novice.h>
 #include "Player.h"
 
-const char kWindowTitle[] = "LE2B_23_マスダリュウ";
+const char kWindowTitle[] = "並行世界";
 
 enum MapInfo {
 	NONE, // 0
@@ -14,8 +14,6 @@ typedef struct Block {
 	Vector2 size;     //画像の大きさ
 	Vector2 imagePos; //読み込む画像の座標
 };
-
-
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -132,6 +130,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				DownSideGround = false;
 				changeFlag = false;
 			}
+		}
+		switch (switch_on)
+		{
+		default:
+			break;
 		}
 		///
 		/// ↑更新処理ここまで
