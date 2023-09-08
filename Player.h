@@ -14,13 +14,13 @@ public:
 	void Draw();
 public:
 	Chara BluePlayer = {
-		{2,8},
+		{1,8},
 		32,
 		0x00ffffff,
 	};
 
 	Chara PinkPlayer = {
-		{2,15},
+		{1,15},
 		32,
 		0xff66ffff,
 	};

@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0},
+	   {0,0,0,0,0,0,0,0,0,2,0,0,0,1,0,0,2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0},
 
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -65,7 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 
-	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+	   {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -141,12 +141,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case GAMEOVER: //1
 
+			if (keys[DIK_SPACE]) {
+				player->BluePlayer.pos.x = { 1 };
+				player->PinkPlayer.pos.x = { 1 };
+				Scene = STAGE1;
+			}
+
 			break;
 		case STAGE1: //2
 
 			player->Update(keys, preKeys);
 
-			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && Scene == STAGE1) {
 				changeFlag = true;
 			}
 
@@ -167,19 +173,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				for (int x = 0; x < mapWidth; x++) {
 					//配列でブロックが存在している場合は配置する
 					if (map[y][x] == BLUEENEMY) {
-						if (UpSideGround == true) {
-							//ピンクの敵
-							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
+						if (UpSideGround == false) {
+							if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
 								Scene = GAMEOVER;
 							}
+
 						}
-						//if (UpSideGround == false) {
-						//	//ピンクの敵
-						//	if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
-						//		Scene = GAMEOVER;
-						//	}
-						//}
-						
+					}
+						/*if (UpSideGround == true) {
+							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize) {
+								Scene = GAMEOVER;
+							}
+						}*/
+					if (map[y][x] == PINKENEMY) {
+						/*if (DownSideGround == false) {
+							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize) {
+								Scene = GAMEOVER;
+							}
+						}*/
+						if (DownSideGround == true) {
+							if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
+								Scene = GAMEOVER;
+							}
+
+						}
 					}
 				}
 			}
@@ -232,14 +249,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (map[y][x] == BLUEENEMY) {
 						Novice::DrawSpriteRect(x * BlockSize, y * BlockSize, 0, 32, 0, 32, blueEnemy, 1.0, 1.0, 0.0f, 0xFFFFFFFF);
 					}
-
 					if (map[y][x] == PINKENEMY) {
 						Novice::DrawSpriteRect(x* BlockSize, y* BlockSize, 0, 32, 0, 32, pinkEnemy, 1.0, 1.0, 0.0f, 0xFFFFFFFF);
 					}
-
 				}
 			}
-
 			player->Draw();
 
 			break;
@@ -255,12 +269,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case CLEAR: //6
 
 			break;
-
-
 		}
 
-		Novice::ScreenPrintf(100, 100, "%d", Scene);
-		
+		Novice::ScreenPrintf(100, 100, "Scene = %d", Scene);
+		Novice::ScreenPrintf(100, 120, "UpSide = %d", UpSideGround );
+		Novice::ScreenPrintf(100, 140, "DownSide = %d", DownSideGround);
+
 		///
 		/// ↑描画処理ここまで
 		///
