@@ -4,8 +4,20 @@
 const char kWindowTitle[] = "並行世界";
 
 enum MapInfo {
-	NONE, // 0
-	BLOCK // 1
+	NONE,      // 0
+	BLUEENEMY, // 1
+	PINKENEMY, // 2
+	PORTAL     // 3
+};
+
+enum SCENE {
+	TITLE,    //0
+	GAMEOVER, //1
+	STAGE1,   //2
+	STAGE2,   //3
+	STAGE3,   //4
+	STAGE4,   //5
+	CLEAR     //6
 };
 
 typedef struct Block {
@@ -31,6 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	const int mapWidth = 40;  //X軸のブロックの数
 
 	int BlockSize = 32;
+	int Scene = TITLE;
 
 	int map[mapHeight][mapWidth]{
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -41,7 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0},
 
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -52,7 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 
-	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -65,7 +78,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Block block[mapHeight][mapWidth]{};
 
-	int gh1 = Novice::LoadTexture("./map.png");
+	int blueEnemy = Novice::LoadTexture("./Resources/blueEnemy.png");
+	int pinkEnemy = Novice::LoadTexture("./Resources/pinkEnemy.png");
 	int pinkground = Novice::LoadTexture("./Resources/pinkground.png");
 	int pinkground1 = Novice::LoadTexture("./Resources/pinkground1.png");//反転バージョン
 	int blueground = Novice::LoadTexture("./Resources/blueground.png");
@@ -82,7 +96,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			//ブロックがある場合
 			if (map[y][x] == 1) {
-				block[y][x].state = BLOCK;
+				block[y][x].state = BLUEENEMY;
+				block[y][x].imagePos.x = 0;
+				block[y][x].imagePos.y = 32;
+			}
+
+			if (map[y][x] == 2) {
+				block[y][x].state = PINKENEMY;
 				block[y][x].imagePos.x = 0;
 				block[y][x].imagePos.y = 32;
 			}
@@ -94,7 +114,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				block[y][x].imagePos.y = 0;
 			}
 		}
-
 	}
 	bool UpSideGround = false;
 	bool DownSideGround = true;
@@ -112,28 +131,71 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
-		
-		player->Update(keys,preKeys);
+		switch (Scene) {
+		case TITLE: //0
 
-		if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 ) {
-			changeFlag = true;
-		}
-		
-		if(changeFlag==true){
-			if ( UpSideGround == true) {
-				UpSideGround = false;
-				DownSideGround = true;
-				changeFlag = false;
+			if (keys[DIK_SPACE]) {
+				Scene = STAGE1;
 			}
-			else if (DownSideGround == true) {
-				UpSideGround = true;
-				DownSideGround = false;
-				changeFlag = false;
+
+			break;
+		case GAMEOVER: //1
+
+			break;
+		case STAGE1: //2
+
+			player->Update(keys, preKeys);
+
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
+				changeFlag = true;
 			}
-		}
-		switch (switch_on)
-		{
-		default:
+
+			if (changeFlag == true) {
+				if (UpSideGround == true) {
+					UpSideGround = false;
+					DownSideGround = true;
+					changeFlag = false;
+				}
+				else if (DownSideGround == true) {
+					UpSideGround = true;
+					DownSideGround = false;
+					changeFlag = false;
+				}
+			}
+			for (int y = 0; y < mapHeight; y++) {
+				//列の繰り返し
+				for (int x = 0; x < mapWidth; x++) {
+					//配列でブロックが存在している場合は配置する
+					if (map[y][x] == BLUEENEMY) {
+						if (UpSideGround == true) {
+							//ピンクの敵
+							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
+								Scene = GAMEOVER;
+							}
+						}
+						//if (UpSideGround == false) {
+						//	//ピンクの敵
+						//	if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
+						//		Scene = GAMEOVER;
+						//	}
+						//}
+						
+					}
+				}
+			}
+
+			break;
+		case STAGE2: //3
+
+			break;
+		case STAGE3: //4
+
+			break;
+		case STAGE4: //5
+
+			break;
+		case CLEAR: //6
+
 			break;
 		}
 		///
@@ -144,26 +206,61 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		if (UpSideGround == true){
-			Novice::DrawSprite(0, 272, blueground, 1, 1, 0.0f, WHITE);
-			Novice::DrawSprite(0, 384, pinkground1, 1, 1, 0.0f, WHITE);
-		}
-		if (DownSideGround == true) {
-			Novice::DrawSprite(0, 272, pinkground, 1, 1, 0.0f, WHITE);
-			Novice::DrawSprite(0, 384, blueground1, 1, 1, 0.0f, WHITE);
-		}
-		//行の繰り返し
-		for (int y = 0; y < mapHeight; y++) {
-			//列の繰り返し
-			for (int x = 0; x < mapWidth; x++) {
-				//配列でブロックが存在している場合は配置する
-				if (map[y][x] == BLOCK) {
-					Novice::DrawSpriteRect(x * BlockSize, y * BlockSize, 0, 32, 0, 32, gh1, 1.0, 1.0, 0.0f, 0xFFFFFFFF);
+		switch (Scene)
+		{
+		case TITLE:
+			break;
+
+		case GAMEOVER: //1
+
+			break;
+		case STAGE1: //2
+
+			if (UpSideGround == true) {
+				Novice::DrawSprite(0, 272, blueground, 1, 1, 0.0f, WHITE);
+				Novice::DrawSprite(0, 384, pinkground1, 1, 1, 0.0f, WHITE);
+			}
+			if (DownSideGround == true) {
+				Novice::DrawSprite(0, 272, pinkground, 1, 1, 0.0f, WHITE);
+				Novice::DrawSprite(0, 384, blueground1, 1, 1, 0.0f, WHITE);
+			}
+			//行の繰り返し
+			for (int y = 0; y < mapHeight; y++) {
+				//列の繰り返し
+				for (int x = 0; x < mapWidth; x++) {
+					//配列でブロックが存在している場合は配置する
+					if (map[y][x] == BLUEENEMY) {
+						Novice::DrawSpriteRect(x * BlockSize, y * BlockSize, 0, 32, 0, 32, blueEnemy, 1.0, 1.0, 0.0f, 0xFFFFFFFF);
+					}
+
+					if (map[y][x] == PINKENEMY) {
+						Novice::DrawSpriteRect(x* BlockSize, y* BlockSize, 0, 32, 0, 32, pinkEnemy, 1.0, 1.0, 0.0f, 0xFFFFFFFF);
+					}
+
 				}
 			}
+
+			player->Draw();
+
+			break;
+		case STAGE2: //3
+
+			break;
+		case STAGE3: //4
+
+			break;
+		case STAGE4: //5
+
+			break;
+		case CLEAR: //6
+
+			break;
+
+
 		}
-		Novice::ScreenPrintf(100, 100, "%d", UpSideGround);
-		player->Draw();
+
+		Novice::ScreenPrintf(100, 100, "%d", Scene);
+		
 		///
 		/// ↑描画処理ここまで
 		///

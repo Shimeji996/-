@@ -33,8 +33,8 @@ void Player::Update(char* keys, char* preKeys)
 void Player::Draw()
 {
 	if (UpSideGround == true) {
-		Novice::DrawBox(BluePlayer.pos.x * 32, BluePlayer.pos.y * 32+220, BluePlayer.radius, BluePlayer.radius, 0.0f, BluePlayer.color, kFillModeSolid);
-		Novice::DrawBox(PinkPlayer.pos.x * 32, PinkPlayer.pos.y * 32-220, PinkPlayer.radius, PinkPlayer.radius, 0.0f, PinkPlayer.color, kFillModeSolid);
+		Novice::DrawBox(BluePlayer.pos.x * 32, BluePlayer.pos.y * 32+224, BluePlayer.radius, BluePlayer.radius, 0.0f, BluePlayer.color, kFillModeSolid);
+		Novice::DrawBox(PinkPlayer.pos.x * 32, PinkPlayer.pos.y * 32-224, PinkPlayer.radius, PinkPlayer.radius, 0.0f, PinkPlayer.color, kFillModeSolid);
 	}
 	if (DownSideGround == true) {
 		Novice::DrawBox(BluePlayer.pos.x * 32, BluePlayer.pos.y * 32, BluePlayer.radius, BluePlayer.radius, 0.0f, BluePlayer.color, kFillModeSolid);

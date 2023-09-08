@@ -12,17 +12,17 @@ public:
 	void Initialize();
 	void Update(char* keys, char* preKeys);
 	void Draw();
-private:
+public:
 	Chara BluePlayer = {
 		{2,8},
 		32,
-		0xffffffff,
+		0x00ffffff,
 	};
 
 	Chara PinkPlayer = {
 		{2,15},
 		32,
-		0x000000ff,
+		0xff66ffff,
 	};
 private:
 	bool UpSideGround = false;
