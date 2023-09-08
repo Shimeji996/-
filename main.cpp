@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	   {0,0,0,0,0,0,0,0,0,2,0,0,0,1,0,0,2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0},
+	   {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,2,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,2,0,0,0,0},
 
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -65,7 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 
-	   {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -84,6 +84,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int pinkground1 = Novice::LoadTexture("./Resources/pinkground1.png");//反転バージョン
 	int blueground = Novice::LoadTexture("./Resources/blueground.png");
 	int blueground1 = Novice::LoadTexture("./Resources/blueground1.png");//反転バージョン
+
+	
 
 	//ブロックの状況
 	for (int y = 0; y < mapHeight; y++) {
@@ -130,6 +132,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
+		if (preKeys[DIK_R] == 0 && keys[DIK_R] != 0) {
+			player->BluePlayer.pos.x = { 1 };
+			player->PinkPlayer.pos.x = { 1 };
+			Scene = STAGE1;
+		}
 
 		switch (Scene) {
 		case TITLE: //0
@@ -172,30 +179,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				//列の繰り返し
 				for (int x = 0; x < mapWidth; x++) {
 					//配列でブロックが存在している場合は配置する
-					if (map[y][x] == BLUEENEMY) {
+					if (map[y][x] == PINKENEMY) {
 						if (UpSideGround == false) {
-							if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
+							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize + 32 &&
+								player->BluePlayer.pos.y * 32 + 16 > y * BlockSize && player->BluePlayer.pos.y * 32 + 16 < y * BlockSize + 32) {
 								Scene = GAMEOVER;
 							}
-
+							if (player->BluePlayer.pos.x * 32  > x * BlockSize && player->BluePlayer.pos.x * 32  < x * BlockSize + 32 &&
+								player->BluePlayer.pos.y * 32 + 16 > y * BlockSize && player->BluePlayer.pos.y * 32 + 16 < y * BlockSize + 32) {
+								Scene = GAMEOVER;
+							}
 						}
 					}
-						/*if (UpSideGround == true) {
-							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize) {
+					if (map[y][x] == BLUEENEMY) {
+						if (UpSideGround == true) {
+							if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32 &&
+								player->PinkPlayer.pos.y * 32 + 16 > y * BlockSize && player->PinkPlayer.pos.y * 32 + 16 < y * BlockSize + 32) {
 								Scene = GAMEOVER;
 							}
-						}*/
-					if (map[y][x] == PINKENEMY) {
-						/*if (DownSideGround == false) {
-							if (player->BluePlayer.pos.x * 32 + 32 > x * BlockSize && player->BluePlayer.pos.x * 32 + 32 < x * BlockSize) {
+							if (player->PinkPlayer.pos.x * 32  > x * BlockSize && player->PinkPlayer.pos.x * 32  < x * BlockSize + 32 &&
+								player->PinkPlayer.pos.y * 32 + 16 > y * BlockSize && player->PinkPlayer.pos.y * 32 + 16 < y * BlockSize + 32) {
 								Scene = GAMEOVER;
 							}
-						}*/
-						if (DownSideGround == true) {
-							if (player->PinkPlayer.pos.x * 32 + 32 > x * BlockSize && player->PinkPlayer.pos.x * 32 + 32 < x * BlockSize + 32) {
-								Scene = GAMEOVER;
-							}
-
 						}
 					}
 				}
@@ -270,11 +275,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		}
-
+		Novice::ScreenPrintf(100, 80, "R = reset");
 		Novice::ScreenPrintf(100, 100, "Scene = %d", Scene);
 		Novice::ScreenPrintf(100, 120, "UpSide = %d", UpSideGround );
 		Novice::ScreenPrintf(100, 140, "DownSide = %d", DownSideGround);
-
+		Novice::ScreenPrintf(100, 160, "bluepos.y = %f", player->BluePlayer.pos.y * 32 + 16);
+		Novice::ScreenPrintf(100, 180, "bluepos.x = %f", player->BluePlayer.pos.x);
+		Novice::ScreenPrintf(100, 200, "pinkpos.y = %f", player->PinkPlayer.pos.y * 32 + 16);
+		Novice::ScreenPrintf(100, 220, "pinkpos.x = %f", player->PinkPlayer.pos.x);
 		///
 		/// ↑描画処理ここまで
 		///
@@ -287,7 +295,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 	}
-
+	
 	// ライブラリの終了
 	Novice::Finalize();
 	return 0;
