@@ -12,20 +12,28 @@ void Player::Update(char* keys, char* preKeys)
 	PinkPlayer.pos.x += 0.06f;
 
 	if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
-		changeFlag = true;
+		changePlayerFlag = true;
 	}
 
-	if (changeFlag == true) {
+	if (changePlayerFlag == true) {
 		if (UpSideGround == true) {
 			UpSideGround = false;
 			DownSideGround = true;
-			changeFlag = false;
+			changePlayerFlag = false;
 		}
 		else if (DownSideGround == true) {
 			UpSideGround = true;
 			DownSideGround = false;
-			changeFlag = false;
+			changePlayerFlag = false;
 		}
+	}
+	if (UpSideGround == true) {
+		BluePlayer.pos.y = 15;
+		PinkPlayer.pos.y = 8;
+	}
+	if (UpSideGround == false) {
+		PinkPlayer.pos.y = 15;
+		BluePlayer.pos.y = 8;
 	}
 
 }
@@ -33,11 +41,29 @@ void Player::Update(char* keys, char* preKeys)
 void Player::Draw()
 {
 	if (UpSideGround == true) {
-		Novice::DrawBox(BluePlayer.pos.x * 32, BluePlayer.pos.y * 32+224, BluePlayer.radius, BluePlayer.radius, 0.0f, BluePlayer.color, kFillModeSolid);
-		Novice::DrawBox(PinkPlayer.pos.x * 32, PinkPlayer.pos.y * 32-224, PinkPlayer.radius, PinkPlayer.radius, 0.0f, PinkPlayer.color, kFillModeSolid);
+		Novice::DrawBox(
+			static_cast<int>(BluePlayer.pos.x * 32.0f),
+			static_cast<int>(BluePlayer.pos.y * 32.0f),
+			static_cast<int>(BluePlayer.radius),
+			static_cast<int>(BluePlayer.radius), 0.0f, BluePlayer.color, kFillModeSolid);
+
+		Novice::DrawBox(
+			static_cast<int>(PinkPlayer.pos.x * 32.0f),
+			static_cast<int>(PinkPlayer.pos.y * 32.0f),
+			static_cast<int>(PinkPlayer.radius),
+			static_cast<int>(PinkPlayer.radius), 0.0f, PinkPlayer.color, kFillModeSolid);
 	}
 	if (DownSideGround == true) {
-		Novice::DrawBox(BluePlayer.pos.x * 32, BluePlayer.pos.y * 32, BluePlayer.radius, BluePlayer.radius, 0.0f, BluePlayer.color, kFillModeSolid);
-		Novice::DrawBox(PinkPlayer.pos.x * 32, PinkPlayer.pos.y * 32, PinkPlayer.radius, PinkPlayer.radius, 0.0f, PinkPlayer.color, kFillModeSolid);
+		Novice::DrawBox(
+			static_cast<int>(BluePlayer.pos.x * 32.0f),
+			static_cast<int>(BluePlayer.pos.y * 32.0f),
+			static_cast<int>(BluePlayer.radius),
+			static_cast<int>(BluePlayer.radius), 0.0f, BluePlayer.color, kFillModeSolid);
+
+		Novice::DrawBox(
+			static_cast<int>(PinkPlayer.pos.x * 32.0f),
+			static_cast<int>(PinkPlayer.pos.y * 32.0f),
+			static_cast<int>(PinkPlayer.radius),
+			static_cast<int>(PinkPlayer.radius), 0.0f, PinkPlayer.color, kFillModeSolid);
 	}
 }
